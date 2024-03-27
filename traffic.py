@@ -52,6 +52,14 @@ class Car:
     def draw(self):
         pygame.draw.circle(screen, BLACK, (int(self.x), int(self.y)), car_radius)
 
+    # Checks if car will hit the car infront of it
+    def will_collide(self, cars):
+        for car in cars:
+            if (car != self) and (self.speed > car.speed) and (self.lane == car.lane) and (car.x - self.x <= 15 and car.x - self.x >= 0):
+                return True
+        return False
+
+
 # Function to draw lanes
 def draw_lanes():
     lane_height = lane_width
@@ -78,6 +86,8 @@ while running:
     for car in cars:
         car.move()
         car.draw()
+        # if car.will_collide(cars):
+        #     print("Beep")
 
     pygame.display.update()
     clock.tick(60)
