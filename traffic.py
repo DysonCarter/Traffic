@@ -27,6 +27,7 @@ screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Traffic Pattern Simulation")
 clock = pygame.time.Clock()
 
+# Class for cars
 class Car:
     def __init__(self, lane):
         # Pick a Lane
@@ -60,7 +61,9 @@ def draw_lanes():
         lane_y = (i + 1) * lane_offset + i * lane_height
         pygame.draw.rect(screen, WHITE, (lane_x, lane_y, width, lane_height))
 
+# Create all cars
 cars = [Car(random.randint(1, lane_count)) for _ in range(car_count)]
+
 # Main loop
 running = True
 while running:
@@ -79,5 +82,6 @@ while running:
     pygame.display.update()
     clock.tick(60)
 
+# Quit
 pygame.quit()
 exit()
