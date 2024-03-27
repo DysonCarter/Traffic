@@ -9,6 +9,7 @@ pygame.init()
 width = 1000
 height = 500
 screen = pygame.display.set_mode((width, height))
+clock = pygame.time.Clock()
 
 while True:
     for event in pygame.event.get():
@@ -16,3 +17,4 @@ while True:
             pygame.quit()
             exit()
     pygame.display.update()
+    clock.tick(60);
