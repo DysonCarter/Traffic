@@ -16,7 +16,6 @@ width = 1400
 height = 200
 lane_width = 5
 lane_count = 2
-lane_padding = 0
 car_radius = 10
 
 # Create window
@@ -27,15 +26,15 @@ clock = pygame.time.Clock()
 class Car:
     def __init__(self, lane):
         self.lane = lane
-        self.x = lane_padding + lane_width // 2
+        self.x = lane * lane_width + lane_width // 2
         self.y = height // 2
         self.speed = random.uniform(0.1, 0.5)  # Random initial speed
 
     def move(self):
         # Move horizontally
         self.x += self.speed
-        if self.x > width - lane_padding:
-            self.x = lane_padding
+        if self.x > width:
+            self.x = 0
 
     def draw(self):
         pygame.draw.circle(screen, BLACK, (int(self.x), int(self.y)), car_radius)
@@ -45,9 +44,9 @@ def draw_lanes():
     lane_height = lane_width
     lane_offset = (height - lane_height * lane_count) // (lane_count + 1)
     for i in range(lane_count):
-        lane_x = lane_padding
+        lane_x = i * lane_width
         lane_y = (i + 1) * lane_offset + i * lane_height
-        pygame.draw.rect(screen, WHITE, (lane_x, lane_y, width - 2 * lane_padding, lane_height))
+        pygame.draw.rect(screen, WHITE, (lane_x, lane_y, width, lane_height))
 
 # Create cars
 cars = [Car(i) for i in range(lane_count)]
