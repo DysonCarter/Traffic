@@ -73,7 +73,7 @@ while running:
 
     # Move and draw cars
     for car in cars:
-        # car.move()
+        car.move()
         car.draw()
 
     pygame.display.update()
