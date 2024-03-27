@@ -24,7 +24,7 @@ car_count = 10
 
 # Create window
 screen = pygame.display.set_mode((width, height))
-pygame.display.set_caption("Traffic Simulation")
+pygame.display.set_caption("Traffic Pattern Simulation")
 clock = pygame.time.Clock()
 
 class Car:
@@ -39,7 +39,7 @@ class Car:
             self.y = lane3_height
             
         self.lane = lane
-        self.x = lane * lane_width + lane_width / 2
+        self.x = random.randint(0, int(width * 0.10))
         self.speed = random.uniform(0.1, 0.5)  # Random initial speed
 
     def move(self):
@@ -73,7 +73,7 @@ while running:
 
     # Move and draw cars
     for car in cars:
-        car.move()
+        # car.move()
         car.draw()
 
     pygame.display.update()
