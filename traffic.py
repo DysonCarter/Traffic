@@ -20,7 +20,7 @@ lane1_height = height * .15
 lane2_height = height * .50
 lane3_height = height * .85
 car_radius = 10
-car_count = 10
+car_count = 1
 
 # Create window
 screen = pygame.display.set_mode((width, height))
@@ -63,6 +63,24 @@ class Car:
         if not (0 <= other_car.x - self.x <= 30):
             return False
         return True
+    
+    def try_lane_change_left(self):
+        if self.lane == 1:
+            return
+        if self.lane == 2:
+            if self.y != lane1_height:
+                self.y -= 1
+            else:
+                self.lane = 1
+        if self.lane == 3: 
+            if self.y != lane2_height:
+                self.y -= 1
+            else:
+                self.lane = 2
+        return
+
+    def change_lane_right(self):
+        pass
 
 # Basic Strategy Class
 # Grin and Bare it Strategy - No Changing Lanes
