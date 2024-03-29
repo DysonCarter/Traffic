@@ -29,7 +29,7 @@ clock = pygame.time.Clock()
 
 # Class for cars
 class Car:
-    def __init__(self, lane):
+    def __init__(self, lane, strategy):
         # Pick a Lane
         lane = random.randint(1,3)
         if lane == 1:
@@ -40,8 +40,10 @@ class Car:
             self.y = lane3_height
             
         self.lane = lane
-        self.x = random.randint(0, int(width * 0.10))
-        self.speed = random.uniform(0.1, 0.5)  # Random initial speed
+        self.x = random.randint(0, int(width * 0.30))
+        self.initial_speed = random.uniform(0.2, 0.6)  # Random initial speed
+        self.speed = self.initial_speed
+        self.strategy = strategy()
 
     def move(self):
         # Move horizontally
@@ -52,13 +54,21 @@ class Car:
     def draw(self):
         pygame.draw.circle(screen, BLACK, (int(self.x), int(self.y)), car_radius)
 
-    # Checks if car will hit the car infront of it
-    def will_collide(self, cars):
-        for car in cars:
-            if (car != self) and (self.speed > car.speed) and (self.lane == car.lane) and (car.x - self.x <= 15 and car.x - self.x >= 0):
-                return True
+    # Checks if car will hit the car in front of it
+    def will_collide(self, other_car):
+        if (self.speed > other_car.speed) and (self.lane == other_car.lane) and (other_car.x - self.x <= 30 and other_car.x - self.x >= 0):
+            return True
         return False
 
+
+# Basic Strategy Class
+# Grin and Bare it Strategy - No Changing Lanes
+class BasicStrategy: 
+    def run_strategy(self, car, cars):
+        for other_car in cars:
+            if car.will_collide(other_car) and (car != other_car):
+                car.speed = other_car.speed
+                break  
 
 # Function to draw lanes
 def draw_lanes():
@@ -70,7 +80,7 @@ def draw_lanes():
         pygame.draw.rect(screen, WHITE, (lane_x, lane_y, width, lane_height))
 
 # Create all cars
-cars = [Car(random.randint(1, lane_count)) for _ in range(car_count)]
+cars = [Car(random.randint(1, lane_count), BasicStrategy) for _ in range(car_count)]
 
 # Main loop
 running = True
@@ -86,8 +96,7 @@ while running:
     for car in cars:
         car.move()
         car.draw()
-        # if car.will_collide(cars):
-        #     print("Beep")
+        car.strategy.run_strategy(car, cars)
 
     pygame.display.update()
     clock.tick(60)
