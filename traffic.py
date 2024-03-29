@@ -20,7 +20,7 @@ lane1_height = height * .15
 lane2_height = height * .50
 lane3_height = height * .85
 car_radius = 10
-car_count = 1
+car_count = 10
 
 # Create window
 screen = pygame.display.set_mode((width, height))
@@ -98,7 +98,6 @@ class Car:
 # Grin and Bare it Strategy - No Changing Lanes
 class BasicStrategy: 
     def run_strategy(self, car, cars):
-        car.try_lane_change_right()
         for other_car in cars:
             if car.will_collide(other_car) and (car != other_car):
                 car.speed = other_car.speed
@@ -109,7 +108,7 @@ def draw_lanes():
     lane_height = lane_width
     lane_offset = (height - lane_height * lane_count) // (lane_count + 1)
     for i in range(lane_count):
-        lane_x = i * lane_width
+        lane_x = 0
         lane_y = (i + 1) * lane_offset + i * lane_height
         pygame.draw.rect(screen, WHITE, (lane_x, lane_y, width, lane_height))
 
