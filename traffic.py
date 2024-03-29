@@ -79,13 +79,26 @@ class Car:
                 self.lane = 2
         return
 
-    def change_lane_right(self):
-        pass
+    def try_lane_change_right(self):
+        if self.lane == 3:
+            return
+        if self.lane == 2:
+            if self.y != lane3_height:
+                self.y += 1
+            else:
+                self.lane = 3
+        if self.lane == 1: 
+            if self.y != lane2_height:
+                self.y += 1
+            else:
+                self.lane = 2
+        return
 
 # Basic Strategy Class
 # Grin and Bare it Strategy - No Changing Lanes
 class BasicStrategy: 
     def run_strategy(self, car, cars):
+        car.try_lane_change_right()
         for other_car in cars:
             if car.will_collide(other_car) and (car != other_car):
                 car.speed = other_car.speed
