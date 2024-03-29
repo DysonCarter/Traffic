@@ -40,8 +40,8 @@ class Car:
             self.y = lane3_height
             
         self.lane = lane
-        self.x = random.randint(0, int(width * 0.30))
-        self.initial_speed = random.uniform(.75, 3)  # Random initial speed
+        self.x = random.randint(0, int(width * 0.75))
+        self.initial_speed = random.uniform(1, 3)  # Random initial speed
         self.speed = self.initial_speed
         self.strategy = strategy()
 
