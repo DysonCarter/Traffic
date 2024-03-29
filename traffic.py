@@ -56,10 +56,13 @@ class Car:
 
     # Checks if car will hit the car in front of it
     def will_collide(self, other_car):
-        if (self.speed > other_car.speed) and (self.lane == other_car.lane) and (other_car.x - self.x <= 30 and other_car.x - self.x >= 0):
-            return True
-        return False
-
+        if self.speed <= other_car.speed:
+            return False
+        if self.lane != other_car.lane:
+            return False
+        if not (0 <= other_car.x - self.x <= 30):
+            return False
+        return True
 
 # Basic Strategy Class
 # Grin and Bare it Strategy - No Changing Lanes
