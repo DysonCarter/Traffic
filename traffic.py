@@ -64,6 +64,19 @@ class Car:
             return False
         return True
     
+    # Checks to see if left lane change can commence
+    # Returns true if it is ok, returns false if the other car is there
+    def check_left_mirror(self, other_car):
+        if other_car.lane != (self.lane - 1):
+            return True
+        if (self.x - 150 <= other_car.x <= self.x + 150):
+            return True
+        if (other_car.x >= self.x + 30) and (other_car.speed >= self.speed):
+            return True
+        if (other_car.x <= self.x - 30) and (other_car.speed <= self.speed):
+            return True
+        return False
+    
     def try_lane_change_left(self):
         if self.lane == 1:
             return
@@ -101,7 +114,7 @@ class BasicStrategy:
         for other_car in cars:
             if car.will_collide(other_car) and (car != other_car):
                 car.speed = other_car.speed
-                break  
+                break
 
 # Function to draw lanes
 def draw_lanes():
