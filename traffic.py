@@ -18,13 +18,14 @@ BLACK = (0, 0, 0)
 GRAY = (128, 128, 128)
 
 # Define constants
-width = 1400
+width = 1000
 height = 200
 lane_width = 5
 lane_count = 2
 lane_height = [50, 100, 150]
 car_radius = 10
-car_count = 7
+car_count = 10
+border_width = 10
 
 # Create window
 screen = pygame.display.set_mode((width, height))
@@ -42,7 +43,7 @@ class Car:
             self.y = lane_height[2]
             
         self.lane = lane
-        self.x = random.randint(0, int(width * .4)) # width * percent of screen to spawn in
+        self.x = random.randint(0, int(width * 1)) # width * percent of screen to spawn in
         self.initial_speed = random.uniform(1, 3)  # Random initial speed
         self.speed = self.initial_speed
         self.strategy = strategy()
@@ -109,7 +110,7 @@ class Car:
         else:
             distance = width - self.x + other.x
 
-        if distance <= (100 * self.initial_speed) and ( self.y + 50 > other.y > self.y - 50):
+        if distance <= (70 * self.speed) and ( self.y + 50 > other.y > self.y - 50):
             return True
         return False
 
@@ -165,8 +166,19 @@ class NiceStrategy:
 # Function to draw lanes
 def draw_lanes():
     lane_heights = [75, 125]  # Heights for the two lanes
-    for i, lane_y in enumerate(lane_heights):
+    lane_width = 5  # Width of each lane
+
+    for lane_y in lane_heights:
+        # Draw the lane rectangle
         pygame.draw.rect(screen, WHITE, (0, lane_y - lane_width // 2, width, lane_width))
+
+def draw_border():
+    # Draw the black border around the screen
+    pygame.draw.rect(screen, BLACK, (0, 0, width, border_width))  # Top border
+    pygame.draw.rect(screen, BLACK, (0, height - border_width, width, border_width))  # Bottom border
+    pygame.draw.rect(screen, BLACK, (0, 0, border_width, height))  # Left border
+    pygame.draw.rect(screen, BLACK, (width - border_width, 0, border_width, height))
+
 
 
 
@@ -188,6 +200,8 @@ while running:
         car.move()
         car.draw()
         car.strategy.run_strategy(car, cars)
+
+    draw_border()
 
     pygame.display.update()
     clock.tick(60)
