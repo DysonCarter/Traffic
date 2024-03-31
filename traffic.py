@@ -1,5 +1,11 @@
 # traffic.py by Dyson carter
 
+'''
+TODO:
+CHANGE Methods of mirror checks and will collide to only check if a car is in that area, relegate speed checks to the strategies.
+also we should not compare lanes between two cars
+'''
+
 import pygame
 import random
 from sys import exit
@@ -21,7 +27,7 @@ lane2_height = height * .50
 lane3_height = height * .85
 lane_height = [height * .15, height * .5, height * .85]
 car_radius = 10
-car_count = 5
+car_count = 10
 
 # Create window
 screen = pygame.display.set_mode((width, height))
@@ -62,8 +68,6 @@ class Car:
     def will_collide(self, other_car):
         if self.speed <= other_car.speed:
             return False
-        if self.lane != other_car.lane:
-            return False
 
         # Calculate distance considering looping
         if self.x <= other_car.x:
@@ -71,7 +75,7 @@ class Car:
         else:
             distance = width - self.x + other_car.x
 
-        if distance <= 100:
+        if distance <= 100 and ( self.y + 50 > other_car.y > self.y - 50):
             return True
         return False
 
@@ -93,7 +97,7 @@ class Car:
         else:
             distance_y = height - self.y + other_car.y
 
-        if distance_x <= 100 and distance_y <= 100:
+        if distance_x <= 200 and distance_y <= 200:
             return False
 
         return True
@@ -113,7 +117,7 @@ class Car:
         else:
             distance_y = height - self.y + other_car.y
 
-        if distance_x <= 100 and distance_y <= 100:
+        if distance_x <= 200 and distance_y <= 200:
             return False
 
         return True
@@ -181,7 +185,7 @@ def draw_lanes():
         pygame.draw.rect(screen, WHITE, (lane_x, lane_y, width, lane_height))
 
 # Create all cars
-cars = [Car(random.randint(1, lane_count), NiceStrategy) for _ in range(car_count)]
+cars = [Car(random.randint(1, lane_count), BasicStrategy) for _ in range(car_count)]
 
 # Main loop
 running = True
