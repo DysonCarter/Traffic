@@ -24,7 +24,7 @@ lane_width = 5
 lane_count = 2
 lane_height = [50, 100, 150]
 car_radius = 10
-car_count = 10
+car_count = 7
 
 # Create window
 screen = pygame.display.set_mode((width, height))
@@ -42,7 +42,7 @@ class Car:
             self.y = lane_height[2]
             
         self.lane = lane
-        self.x = random.randint(0, int(width * 1)) # width * percent of screen to spawn in
+        self.x = random.randint(0, int(width * .4)) # width * percent of screen to spawn in
         self.initial_speed = random.uniform(1, 3)  # Random initial speed
         self.speed = self.initial_speed
         self.strategy = strategy()
@@ -109,12 +109,12 @@ class Car:
         else:
             distance = width - self.x + other.x
 
-        if distance <= 200 and ( self.y + 50 > other.y > self.y - 50):
+        if distance <= (100 * self.initial_speed) and ( self.y + 50 > other.y > self.y - 50):
             return True
         return False
 
     def draw(self):
-        pygame.draw.circle(screen, BLACK, (int(self.x), int(self.y)), car_radius)
+        pygame.draw.circle(screen, (85 * self.initial_speed, 0,0), (int(self.x), int(self.y)), car_radius)
 
 # Basic Strategy Class
 # Grin and Bare it Strategy - No Changing Lanes
