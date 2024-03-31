@@ -83,7 +83,7 @@ class Car:
     # Checks to see if lane change can commence
     # Returns true if it is ok, returns false if the other car is there
     def check_left_mirror(self, other_car):
-        if other_car.lane != (self.lane - 1):
+        if other_car.y <= self.y:
             return True
 
         # Calculate distance considering screen looping
@@ -103,7 +103,7 @@ class Car:
         return True
 
     def check_right_mirror(self, other_car):
-        if other_car.lane != (self.lane + 1):
+        if other_car.y >= self.y:
             return True
 
         # Calculate distance considering screen looping
@@ -185,7 +185,7 @@ def draw_lanes():
         pygame.draw.rect(screen, WHITE, (lane_x, lane_y, width, lane_height))
 
 # Create all cars
-cars = [Car(random.randint(1, lane_count), BasicStrategy) for _ in range(car_count)]
+cars = [Car(random.randint(1, lane_count), NiceStrategy) for _ in range(car_count)]
 
 # Main loop
 running = True
