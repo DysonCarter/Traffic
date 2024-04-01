@@ -160,6 +160,7 @@ class Car:
             return True
         return False
 
+    # Draws the car
     def draw(self):
         pygame.draw.circle(screen, (85 * self.initial_speed, 0,0), (int(self.x), int(self.y)), car_radius)
 
@@ -221,6 +222,7 @@ class Nice:
             
 # Selfish Strategy Class
 # Will only change lanes if they need to pass - Will pass on the right if neccessary
+# TODO Fix Logic so they dont jump like a bunny when merging right                
 class Selfish:
     def run_strategy(self, car, cars):
         will_collide = False
@@ -284,9 +286,6 @@ def draw_border():
     pygame.draw.rect(screen, BLACK, (0, height - border_width, width, border_width))  # Bottom border
     pygame.draw.rect(screen, BLACK, (0, 0, border_width, height))  # Left border
     pygame.draw.rect(screen, BLACK, (width - border_width, 0, border_width, height))
-
-
-
 
 # Create all cars
 cars = [Car(random.randint(0, lane_count), Selfish) for _ in range(car_count)]
