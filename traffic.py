@@ -204,7 +204,7 @@ while running:
     draw_border()
 
     pygame.display.update()
-    clock.tick(120)
+    clock.tick(100)
 
 # Quit
 pygame.quit()
