@@ -18,7 +18,7 @@ BLACK = (0, 0, 0)
 GRAY = (128, 128, 128)
 
 # Define constants
-width = 1000
+width = 1400
 height = 200
 lane_width = 5
 lane_count = 2
@@ -204,7 +204,7 @@ while running:
     draw_border()
 
     pygame.display.update()
-    clock.tick(60)
+    clock.tick(120)
 
 # Quit
 pygame.quit()
