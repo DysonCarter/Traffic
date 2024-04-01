@@ -24,7 +24,7 @@ lane_width = 5
 lane_count = 2
 lane_height = [50, 100, 150]
 car_radius = 10
-car_count = 10
+car_count = 8
 border_width = 10
 
 # Create window
@@ -58,6 +58,20 @@ class Car:
     def merge_right(self):
         self.y += 2
 
+    def right_side_very_clear(self, other):
+        # Calculate distance considering looping
+        if self.x <= other.x:
+            distance = other.x - self.x
+        else:
+            distance = width - self.x + other.x
+
+        if other.x <= self.x:
+            reverse_distance = self.x - other.x
+        else:
+            reverse_distance = width - other.x + self.x
+
+        return (other.y <= self.y) or (other.y > self.y + 50) or ((distance > 300) and (reverse_distance > 100))
+
     def right_side_clear(self, other):
         # Calculate distance considering looping
         if self.x <= other.x:
@@ -83,7 +97,7 @@ class Car:
         else:
             reverse_distance = width - other.x + self.x
 
-        return (other.y >= self.y) or (other.y < self.y - 50) or ((distance > 100) and (reverse_distance > 70))
+        return (other.y >= self.y) or (other.y < self.y - 50) or ((distance > 100) and (reverse_distance > 50))
 
     # Checks if car will hit the car in front of it
     def will_collide(self, other):
@@ -96,7 +110,7 @@ class Car:
         else:
             distance = width - self.x + other.x
 
-        if distance <= 70 and ( self.y + 50 > other.y > self.y - 50):
+        if distance <= 50 and ( self.y + 50 > other.y > self.y - 50):
             return True
         return False
 
@@ -146,7 +160,7 @@ class NiceStrategy:
                 break
         # Check if you can move right
         for other in cars:
-            if not car.right_side_clear(other) or car.y == lane_height[2]:
+            if not car.right_side_very_clear(other) or car.y == lane_height[2]:
                 right_good = False
                 break
         # Check if you can move left
@@ -162,6 +176,8 @@ class NiceStrategy:
             car.merge_left()
         elif right_good:
             car.merge_right()  
+        else:
+            car.speed = car.initial_speed
             
 # Function to draw lanes
 def draw_lanes():
