@@ -215,6 +215,8 @@ class Nice:
             if not car.speed == car.initial_speed:
                 car.speed = car.initial_speed
             
+# Selfish Strategy Class
+# Will only change lanes if they need to pass - Will pass on the right if neccessary
 class Selfish:
     def run_strategy(self, car, cars):
         will_collide = False
