@@ -18,7 +18,7 @@ lane_width = 5
 lane_count = 2
 lane_height = [50, 100, 150]
 car_radius = 10
-car_count = 12
+car_count = 8
 border_width = 10
 
 # Create window
@@ -70,6 +70,24 @@ class Car:
             reverse_distance = width - other.x + self.x
 
         return (other.y <= self.y) or (other.y > self.y + 50) or (distance > (200 + (200 * (speed_difference))) and (reverse_distance > (100 - (speed_difference * 50))))
+    def left_side_very_clear(self, other):
+        # Difference in speed // How much faster the car is compared to other
+        # Max speed is 3 and Min speed is 1 so 
+        # Max diff is 2 and Min Diff is -2
+        speed_difference = self.speed - other.speed
+
+        # Calculate distance considering looping
+        if self.x <= other.x:
+            distance = other.x - self.x
+        else:
+            distance = width - self.x + other.x
+
+        if other.x <= self.x:
+            reverse_distance = self.x - other.x
+        else:
+            reverse_distance = width - other.x + self.x
+
+        return (other.y >= self.y) or (other.y < self.y + 50) or (distance > (200 + (200 * (speed_difference))) and (reverse_distance > (100 - (speed_difference * 50))))
 
     # If there is a lot of space on the right Lane not just clear to change
     def right_side_clear(self, other):
@@ -89,7 +107,7 @@ class Car:
         else:
             reverse_distance = width - other.x + self.x
 
-        return (other.y <= self.y) or (other.y > self.y + 50) or (distance > (70 - (25 * (speed_difference))) and (reverse_distance > (70 - (speed_difference * 25))))
+        return (other.y <= self.y) or (other.y > self.y + 50) or (distance > (50 - (25 * (speed_difference))) and (reverse_distance > (50 - (speed_difference * 25))))
     def left_side_clear(self, other):
         # Difference in speed // How much faster the car is compared to other
         # Max speed is 3 and Min speed is 1 so 
@@ -107,7 +125,7 @@ class Car:
         else:
             reverse_distance = width - other.x + self.x
 
-        return (other.y >= self.y) or (other.y < self.y - 50) or (distance > (50 - (25 * (speed_difference))) and (reverse_distance > (50 - (speed_difference * 25))))
+        return (other.y >= self.y) or (other.y < self.y - 50) or (distance > (50 - (25 * (speed_difference))) and (reverse_distance > 50 - (speed_difference * 25)))
 
     # Checks if car will hit the car in front of it
     def will_collide(self, other):
@@ -143,14 +161,16 @@ class Car:
 
 # Basic Strategy Class
 # Grin and Bare it Strategy - No Changing Lanes
-class BasicStrategy: 
+class Dumb: 
     def run_strategy(self, car, cars):
         for other in cars:
             if car.will_collide(other) and (car != other):
                 car.speed = other.speed
                 break
 
-class NiceStrategy:
+# Nice Strategy Class
+# Considerate of other cars - Only passes on the left - if the right lane is pretty open they'll get over
+class Nice:
     def run_strategy(self, car, cars):
         will_collide = False
         should_pass = False
@@ -195,6 +215,54 @@ class NiceStrategy:
             if not car.speed == car.initial_speed:
                 car.speed = car.initial_speed
             
+class Selfish:
+    def run_strategy(self, car, cars):
+        will_collide = False
+        should_pass = False
+        right_very_good = True
+        left_very_good = True
+        right_good = True
+        left_good = True
+
+        # Check for soon collision
+        for other in cars:
+            if car.will_collide(other) and (car != other):
+                will_collide = True
+                collision_car = other
+                break
+        # Check if car should pass soon
+        for other in cars:
+            if car.should_pass(other) and (car != other):
+                should_pass = True
+                break
+        # Check if you can move right
+        for other in cars:
+            if not car.right_side_clear(other) or car.y == lane_height[2]:
+                right_good = False
+                break
+        # Check if you can move left
+        for other in cars:
+            if not car.left_side_clear(other) or car.y == lane_height[0]:
+                left_good = False
+                break
+
+        if will_collide:
+            if car.speed > collision_car.speed:
+                car.speed = collision_car.speed
+            car.speed -= .01
+            return
+        elif should_pass and left_good:
+            if not car.speed == car.initial_speed:
+                car.speed += .01
+            car.merge_left()
+        elif should_pass and right_good:
+            if not car.speed == car.initial_speed:
+                car.speed += .01
+            car.merge_right() 
+        elif not should_pass:
+            if not car.speed == car.initial_speed:
+                car.speed = car.initial_speed
+
 # Function to draw lanes
 def draw_lanes():
     lane_heights = [75, 125]  # Heights for the two lanes
@@ -215,7 +283,7 @@ def draw_border():
 
 
 # Create all cars
-cars = [Car(random.randint(0, lane_count), NiceStrategy) for _ in range(car_count)]
+cars = [Car(random.randint(0, lane_count), Selfish) for _ in range(car_count)]
 
 # Main loop
 running = True
