@@ -24,7 +24,7 @@ lane_width = 5
 lane_count = 2
 lane_height = [50, 100, 150]
 car_radius = 10
-car_count = 8
+car_count = 20
 border_width = 10
 
 # Create window
@@ -170,15 +170,20 @@ class NiceStrategy:
                 break
 
         if will_collide:
-            car.speed = collision_car.speed
+            if car.speed > collision_car.speed:
+                car.speed = collision_car.speed
+            car.speed -= .01
         elif should_pass and left_good:
-            car.speed = car.initial_speed
+            if not car.speed == car.initial_speed:
+                car.speed += .01
             car.merge_left()
         elif right_good:
-            car.speed = car.initial_speed
+            if not car.speed == car.initial_speed:
+                car.speed += .01
             car.merge_right() 
         elif not should_pass:
-            car.speed = car.initial_speed
+            if not car.speed == car.initial_speed:
+                car.speed = car.initial_speed
             
 # Function to draw lanes
 def draw_lanes():
