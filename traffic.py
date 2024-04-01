@@ -171,12 +171,13 @@ class NiceStrategy:
 
         if will_collide:
             car.speed = collision_car.speed
-        if should_pass and left_good:
+        elif should_pass and left_good:
             car.speed = car.initial_speed
             car.merge_left()
         elif right_good:
-            car.merge_right()  
-        else:
+            car.speed = car.initial_speed
+            car.merge_right() 
+        elif not should_pass:
             car.speed = car.initial_speed
             
 # Function to draw lanes
