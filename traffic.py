@@ -1,11 +1,5 @@
 # traffic.py by Dyson carter
 
-'''
-TODO:
-CHANGE Methods of mirror checks and will collide to only check if a car is in that area, relegate speed checks to the strategies.
-also we should not compare lanes between two cars
-'''
-
 import pygame
 import random
 from sys import exit
@@ -24,7 +18,7 @@ lane_width = 5
 lane_count = 2
 lane_height = [50, 100, 150]
 car_radius = 10
-car_count = 20
+car_count = 12
 border_width = 10
 
 # Create window
@@ -59,6 +53,11 @@ class Car:
         self.y += 2
 
     def right_side_very_clear(self, other):
+        # Difference in speed // How much faster the car is compared to other
+        # Max speed is 3 and Min speed is 1 so 
+        # Max diff is 2 and Min Diff is -2
+        speed_difference = self.speed - other.speed
+
         # Calculate distance considering looping
         if self.x <= other.x:
             distance = other.x - self.x
@@ -70,9 +69,15 @@ class Car:
         else:
             reverse_distance = width - other.x + self.x
 
-        return (other.y <= self.y) or (other.y > self.y + 50) or ((distance > 300) and (reverse_distance > 100))
+        return (other.y <= self.y) or (other.y > self.y + 50) or (distance > (200 + (200 * (speed_difference))) and (reverse_distance > (100 - (speed_difference * 50))))
 
+    # If there is a lot of space on the right Lane not just clear to change
     def right_side_clear(self, other):
+        # Difference in speed // How much faster the car is compared to other
+        # Max speed is 3 and Min speed is 1 so 
+        # Max diff is 2 and Min Diff is -2
+        speed_difference = self.speed - other.speed
+
         # Calculate distance considering looping
         if self.x <= other.x:
             distance = other.x - self.x
@@ -84,8 +89,13 @@ class Car:
         else:
             reverse_distance = width - other.x + self.x
 
-        return (other.y <= self.y) or (other.y > self.y + 50) or ((distance > 100) and (reverse_distance > 70))
+        return (other.y <= self.y) or (other.y > self.y + 50) or (distance > (70 - (25 * (speed_difference))) and (reverse_distance > (70 - (speed_difference * 25))))
     def left_side_clear(self, other):
+        # Difference in speed // How much faster the car is compared to other
+        # Max speed is 3 and Min speed is 1 so 
+        # Max diff is 2 and Min Diff is -2
+        speed_difference = self.speed - other.speed
+
         # Calculate distance considering looping
         if self.x <= other.x:
             distance = other.x - self.x
@@ -97,7 +107,7 @@ class Car:
         else:
             reverse_distance = width - other.x + self.x
 
-        return (other.y >= self.y) or (other.y < self.y - 50) or ((distance > 100) and (reverse_distance > 50))
+        return (other.y >= self.y) or (other.y < self.y - 50) or (distance > (50 - (25 * (speed_difference))) and (reverse_distance > (50 - (speed_difference * 25))))
 
     # Checks if car will hit the car in front of it
     def will_collide(self, other):
@@ -115,7 +125,7 @@ class Car:
         return False
 
     def should_pass(self, other):
-        if self.initial_speed < other.speed:
+        if self.initial_speed <= other.speed:
             return False
 
         # Calculate distance considering looping
@@ -124,7 +134,7 @@ class Car:
         else:
             distance = width - self.x + other.x
 
-        if distance <= (70 * self.speed) and ( self.y + 50 > other.y > self.y - 50):
+        if distance <= (100 * (self.initial_speed - other.speed)+50) and ( self.y + 50 > other.y > self.y - 50):
             return True
         return False
 
