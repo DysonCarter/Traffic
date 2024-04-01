@@ -28,6 +28,7 @@ clock = pygame.time.Clock()
 
 # Class for cars
 class Car:
+    # Construction
     def __init__(self, lane, strategy):
         if lane == 0:
             self.y = lane_height[0]
@@ -42,6 +43,7 @@ class Car:
         self.speed = self.initial_speed
         self.strategy = strategy()
 
+    # Movement
     def move(self):
         # Move horizontally
         self.x += self.speed
@@ -52,6 +54,8 @@ class Car:
     def merge_right(self):
         self.y += 2
 
+    # Lane checks
+    # Very Clear
     def right_side_very_clear(self, other):
         # Difference in speed // How much faster the car is compared to other
         # Max speed is 3 and Min speed is 1 so 
@@ -88,8 +92,7 @@ class Car:
             reverse_distance = width - other.x + self.x
 
         return (other.y >= self.y) or (other.y < self.y + 50) or (distance > (200 + (200 * (speed_difference))) and (reverse_distance > (100 - (speed_difference * 50))))
-
-    # If there is a lot of space on the right Lane not just clear to change
+    # Good to pass
     def right_side_clear(self, other):
         # Difference in speed // How much faster the car is compared to other
         # Max speed is 3 and Min speed is 1 so 
@@ -142,6 +145,7 @@ class Car:
             return True
         return False
 
+    # Wants to pass
     def should_pass(self, other):
         if self.initial_speed <= other.speed:
             return False
