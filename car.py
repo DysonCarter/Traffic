@@ -32,7 +32,6 @@ class Car:
         self.initial_speed = random.uniform(1, 3)  # Random initial speed
         self.speed = self.initial_speed
         self.strategy = strategy()
-        self.preference = random.randint
 
     # Movement
     def move(self):

@@ -20,7 +20,7 @@ lane_width = 5
 lane_count = 2
 lane_height = [50, 100, 150]
 car_radius = 10
-car_count = 15
+car_count = 10
 border_width = 10
 strategy = Selfish
 
