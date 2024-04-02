@@ -22,6 +22,7 @@ lane_height = [50, 100, 150]
 car_radius = 10
 car_count = 15
 border_width = 10
+strategy = Nice
 
 # Create window
 screen = pygame.display.set_mode((width, height))
@@ -45,7 +46,7 @@ def draw_border():
     pygame.draw.rect(screen, BLACK, (width - border_width, 0, border_width, height))
 
 # Create all cars
-cars = [Car(random.randint(0, lane_count), Nice) for _ in range(car_count)]
+cars = [Car(random.randint(0, lane_count), strategy) for _ in range(car_count)]
 
 # Main loop
 running = True
