@@ -110,19 +110,37 @@ class Selfish:
                 left_good = False
                 break
 
-        if will_collide:
-            if car.speed > collision_car.speed:
-                car.speed = collision_car.speed
-            car.speed -= .01
-            return
-        elif should_pass and left_good:
-            if not car.speed == car.initial_speed:
-                car.speed += .01
-            car.merge_left()
-        elif should_pass and right_good:
-            if not car.speed == car.initial_speed:
-                car.speed += .01
-            car.merge_right() 
-        elif not should_pass:
-            if not car.speed == car.initial_speed:
-                car.speed = car.initial_speed
+        if car.preference == 0:
+            if will_collide:
+                if car.speed > collision_car.speed:
+                    car.speed = collision_car.speed
+                car.speed -= .01
+                return
+            elif should_pass and left_good:
+                if not car.speed == car.initial_speed:
+                    car.speed += .001
+                car.merge_left()
+            elif should_pass and right_good:
+                if not car.speed == car.initial_speed:
+                    car.speed += .001
+                car.merge_right() 
+            elif not should_pass:
+                if car.speed < car.initial_speed:
+                    car.speed += .01
+        else:
+            if will_collide:
+                if car.speed > collision_car.speed:
+                    car.speed = collision_car.speed
+                car.speed -= .01
+                return
+            elif should_pass and right_good:
+                if not car.speed == car.initial_speed:
+                    car.speed += .001
+                car.merge_right() 
+            elif should_pass and left_good:
+                if not car.speed == car.initial_speed:
+                    car.speed += .001
+                car.merge_left()
+            elif not should_pass:
+                if car.speed < car.initial_speed:
+                    car.speed += .01
