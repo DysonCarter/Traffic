@@ -110,7 +110,7 @@ class Car:
         else:
             reverse_distance = width - other.x + self.x
 
-        return (other.y <= self.y) or (other.y > self.y + 50) or (distance > (50 - (25 * (speed_difference))) and (reverse_distance > (50 - (speed_difference * 25))))
+        return (other.y <= self.y) or (other.y > self.y + 50) or (distance > (50 + 100 * (self.speed - other.speed)) and reverse_distance > 50)
     def left_side_clear(self, other):
         # Difference in speed // How much faster the car is compared to other
         # Max speed is 3 and Min speed is 1 so 
@@ -128,7 +128,7 @@ class Car:
         else:
             reverse_distance = width - other.x + self.x
 
-        return (other.y >= self.y) or (other.y < self.y - 50) or (distance > (50 - (25 * (speed_difference))) and (reverse_distance > 50 - (speed_difference * 25)))
+        return (other.y >= self.y) or (other.y < self.y - 50) or (distance > (50 + 100 * (self.speed - other.speed)) and reverse_distance > 50)
 
     # Checks if car will hit the car in front of it
     def will_collide(self, other):
@@ -227,8 +227,6 @@ class Selfish:
     def run_strategy(self, car, cars):
         will_collide = False
         should_pass = False
-        right_very_good = True
-        left_very_good = True
         right_good = True
         left_good = True
 
