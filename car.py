@@ -11,6 +11,8 @@ lane_height = [50, 100, 150]
 car_radius = 10
 car_count = 15
 border_width = 10
+collision_distance = 50
+clear_distance = 100
 
 # Create window
 screen = pygame.display.set_mode((width, height))
@@ -100,7 +102,8 @@ class Car:
         else:
             reverse_distance = width - other.x + self.x
 
-        return (other.y <= self.y) or (other.y > self.y + 50) or (distance > (50 + 100 * (self.speed - other.speed)) and reverse_distance > 50)
+        # return (other.y <= self.y) or (other.y > self.y + 50) or (distance > (50 + 100 * (self.speed - other.speed)) and reverse_distance > 50)
+        return (other.y <= self.y) or (other.y > self.y + 50) or ((distance > clear_distance) and reverse_distance > collision_distance)
     def left_side_clear(self, other):
         # Difference in speed // How much faster the car is compared to other
         # Max speed is 3 and Min speed is 1 so 
@@ -118,7 +121,8 @@ class Car:
         else:
             reverse_distance = width - other.x + self.x
 
-        return (other.y >= self.y) or (other.y < self.y - 50) or (distance > (50 + 100 * (self.speed - other.speed)) and reverse_distance > 50)
+        # return (other.y >= self.y) or (other.y < self.y - 50) or (distance > (50 + 100 * (self.speed - other.speed)) and reverse_distance > 50)
+        return (other.y >= self.y) or (other.y < self.y - 50) or ((distance > clear_distance) and reverse_distance > collision_distance)
 
     # Checks if car will hit the car in front of it
     def will_collide(self, other):
@@ -131,7 +135,7 @@ class Car:
         else:
             distance = width - self.x + other.x
 
-        if distance <= 75 and ( self.y + 50 > other.y > self.y - 50):
+        if distance <= collision_distance and ( self.y + 50 > other.y > self.y - 50):
             return True
         return False
 
@@ -146,7 +150,8 @@ class Car:
         else:
             distance = width - self.x + other.x
 
-        if distance <= (100 * (self.initial_speed - other.speed)+50) and ( self.y + 50 > other.y > self.y - 50):
+        # if distance <= (100 * (self.initial_speed - other.speed)+50) and ( self.y + 50 > other.y > self.y - 50):
+        if distance <= clear_distance and ( self.y + 50 > other.y > self.y - 50):
             return True
         return False
 
