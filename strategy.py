@@ -117,11 +117,11 @@ class Selfish:
             return
         elif should_pass and left_good:
             if not car.speed == car.initial_speed:
-                car.speed += .001
+                car.speed += .01
             car.merge_left()
         elif should_pass and right_good:
             if not car.speed == car.initial_speed:
-                car.speed += .001
+                car.speed += .01
             car.merge_right() 
         elif not should_pass:
             if car.speed < car.initial_speed:
