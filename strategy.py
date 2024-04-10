@@ -76,8 +76,8 @@ class Nice:
                 car.speed += .01
             car.merge_right() 
         elif not should_pass:
-            if not car.speed == car.initial_speed:
-                car.speed = car.initial_speed
+            if car.speed < car.initial_speed:
+                car.speed += .01
             
 # Selfish Strategy Class
 # Will only change lanes if they need to pass - Will pass on the right if neccessary         

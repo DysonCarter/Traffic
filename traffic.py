@@ -19,10 +19,9 @@ height = 200
 lane_width = 5
 lane_count = 2
 lane_height = [50, 100, 150]
-car_radius = 10
-car_count = 30
+car_count = 13
 border_width = 10
-strategy = Selfish
+strategy = Nice
 
 # Create window
 screen = pygame.display.set_mode((width, height))
