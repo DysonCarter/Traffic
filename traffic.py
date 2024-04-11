@@ -69,6 +69,12 @@ def draw_menu():
     text_rect = text_surface.get_rect(center=reset_button_rect.center)
     screen.blit(text_surface, text_rect)
 
+    mouse_x, mouse_y = pygame.mouse.get_pos()
+    if reset_button_rect.collidepoint(mouse_x, mouse_y):
+        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+    else:
+        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+
 # Function to handle button click events
 def handle_menu_click(pos):
     global cars
