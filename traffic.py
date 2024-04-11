@@ -15,11 +15,11 @@ GRAY = (128, 128, 128)
 
 # Define constants
 width = 1400
-height = 200
+height = 400
 lane_width = 5
 lane_count = 2
 lane_height = [50, 100, 150]
-car_count = 13
+car_count = 15
 border_width = 10
 strategy = Nice
 

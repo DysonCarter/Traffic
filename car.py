@@ -160,7 +160,7 @@ class Car:
             distance = width - self.x + other.x
 
         # if distance <= (100 * (self.initial_speed - other.speed)+50) and ( self.y + 50 > other.y > self.y - 50):
-        if distance <= clear_distance + 50 and ( self.y + 50 > other.y > self.y - 50):
+        if distance <= clear_distance and ( self.y + 50 > other.y > self.y - 50):
             return True
         return False
 
