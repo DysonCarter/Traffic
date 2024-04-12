@@ -36,27 +36,29 @@ class Nice:
         right_good = True
         left_good = True
 
-        # Check for soon collision
+        # Check variables
         for other in cars:
-            if car.will_collide(other) and (car != other):
-                will_collide = True
-                collision_car = other
-                break
-        # Check if car should pass soon
-        for other in cars:
-            if car.should_pass(other) and (car != other):
-                should_pass = True
-                break
-        # Check if you can move right
-        for other in cars:
-            if not car.right_side_very_clear(other) or car.y == lane_height[2]:
-                right_good = False
-                break
-        # Check if you can move left
-        for other in cars:
-            if not car.left_side_clear(other) or car.y == lane_height[0]:
-                left_good = False
-                break
+            if car != other:
+                # Check for imminent collision
+                if car.will_collide(other) and not will_collide:
+                    will_collide = True
+                    collision_car = other
+
+                # Check if car should pass soon
+                if car.should_pass(other) and not should_pass:
+                    should_pass = True
+
+                # Check if you can move right
+                if not car.right_side_very_clear(other) or car.y == lane_height[2]:
+                    right_good = False
+
+                # Check if you can move left
+                if not car.left_side_clear(other) or car.y == lane_height[0]:
+                    left_good = False
+
+                # Break loop if all conditions are met
+                if will_collide and should_pass and not right_good and not left_good:
+                    break
 
         if will_collide:
             if car.speed > collision_car.speed:
@@ -83,27 +85,29 @@ class Selfish:
         right_good = True
         left_good = True
 
-        # Check for soon collision
+        # Iterate through cars
         for other in cars:
-            if car.will_collide(other) and (car != other):
-                will_collide = True
-                collision_car = other
-                break
-        # Check if car should pass soon
-        for other in cars:
-            if car.should_pass(other) and (car != other):
-                should_pass = True
-                break
-        # Check if you can move right
-        for other in cars:
-            if not car.right_side_clear(other) or car.y == lane_height[2]:
-                right_good = False
-                break
-        # Check if you can move left
-        for other in cars:
-            if not car.left_side_clear(other) or car.y == lane_height[0]:
-                left_good = False
-                break
+            if car != other:
+                # Check for imminent collision
+                if car.will_collide(other) and not will_collide:
+                    will_collide = True
+                    collision_car = other
+
+                # Check if car should pass soon
+                if car.should_pass(other) and not should_pass:
+                    should_pass = True
+
+                # Check if you can move right
+                if not car.right_side_clear(other) or car.y == lane_height[2]:
+                    right_good = False
+
+                # Check if you can move left
+                if not car.left_side_clear(other) or car.y == lane_height[0]:
+                    left_good = False
+
+                # Break loop if all conditions are met
+                if will_collide and should_pass and not right_good and not left_good:
+                    break
 
         if will_collide:
             if car.speed > collision_car.speed:
