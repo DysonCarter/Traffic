@@ -65,7 +65,10 @@ class Car:
         else:
             reverse_distance = width - other.x + self.x
 
-        return (other.y <= self.y) or (other.y > self.y + 50) or (distance > (200 + 100 * (speed_difference))) and (reverse_distance > collision_distance)
+        if speed_difference > 0:
+            return (other.y <= self.y) or (other.y > self.y + 50) or ((distance > 300) and (reverse_distance > collision_distance))
+        else:
+            return (other.y <= self.y) or (other.y > self.y + 50) or ((distance > collision_distance) and (reverse_distance > 300))
     def left_side_very_clear(self, other):
         # Difference in speed // How much faster the car is compared to other
         # Max speed is 3 and Min speed is 1 so 
