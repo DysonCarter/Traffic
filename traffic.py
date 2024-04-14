@@ -52,9 +52,9 @@ menu_height = 200
 menu_color = (50, 50, 50)
 button_color = (100, 100, 100)
 text_color = WHITE
-button_width = 100
-button_height = 50
-button_margin = 20
+button_width = 175
+button_height = 100
+button_margin = 50
 font = pygame.font.SysFont(None, 32)  # Define font for button text
 
 # Car count slider constants
