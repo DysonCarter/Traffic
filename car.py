@@ -14,7 +14,7 @@ car_radius = 12
 car_count = 15
 border_width = 10
 collision_distance = 50
-clear_distance = 100
+clear_distance = 150
 
 # Create window
 screen = pygame.display.set_mode((width, height))
@@ -69,9 +69,9 @@ class Car:
             reverse_distance = width - other.x + self.x
 
         if speed_difference > 0:
-            return (other.y <= self.y) or (other.y > self.y + 50) or ((distance > 300) and (reverse_distance > collision_distance))
+            return (other.y <= self.y) or (other.y > self.y + 50) or ((distance > clear_distance*1.5) and (reverse_distance > collision_distance))
         else:
-            return (other.y <= self.y) or (other.y > self.y + 50) or ((distance > collision_distance) and (reverse_distance > 300))
+            return (other.y <= self.y) or (other.y > self.y + 50) or ((distance > collision_distance) and (reverse_distance > clear_distance*1.5))
     def left_side_very_clear(self, other):
         # Difference in speed // How much faster the car is compared to other
         # Max speed is 3 and Min speed is 1 so 
@@ -113,9 +113,9 @@ class Car:
 
         # return (other.y <= self.y) or (other.y > self.y + 50) or (distance > (50 + 100 * (self.speed - other.speed)) and reverse_distance > 50)
         if speed_difference > 0:
-            return (other.y <= self.y) or (other.y > self.y + 50) or ((distance > 200 + 100 *speed_difference) and (reverse_distance > collision_distance))
+            return (other.y <= self.y) or (other.y > self.y + 50) or ((distance > clear_distance) and (reverse_distance > collision_distance))
         else:
-            return (other.y <= self.y) or (other.y > self.y + 50) or (((distance > collision_distance) and (reverse_distance > 200 + 100*speed_difference)))
+            return (other.y <= self.y) or (other.y > self.y + 50) or (((distance > collision_distance) and (reverse_distance > clear_distance)))
     def left_side_clear(self, other):
         # Difference in speed // How much faster the car is compared to other
         # Max speed is 3 and Min speed is 1 so 
@@ -179,6 +179,6 @@ class Car:
         elif self.strategyName == "<class 'strategy.Dumb'>":
             color = (0, 85 * self.initial_speed, 0)
         else:
-            color = (self.initial_speed * 40, 0, self.initial_speed*85)  # White
+            color = (self.initial_speed * 40, 0, self.initial_speed*85)  # Purplegit
 
         pygame.draw.circle(screen, color, (int(self.x), int(self.y)), car_radius)

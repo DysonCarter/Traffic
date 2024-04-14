@@ -71,6 +71,8 @@ class Nice:
             if car.speed < car.initial_speed:
                 car.speed += .01
             car.merge_right() 
+        elif should_pass and car.speed >= 1:
+            car.speed -= .01
         elif not should_pass:
             if car.speed < car.initial_speed:
                 car.speed = car.initial_speed
@@ -121,6 +123,8 @@ class Selfish:
             if car.speed < car.initial_speed:
                 car.speed += .01
             car.merge_right() 
+        elif should_pass and car.speed >= 1:
+            car.speed -= .01
         elif not should_pass:
             if car.speed < car.initial_speed:
                 car.speed += .01
