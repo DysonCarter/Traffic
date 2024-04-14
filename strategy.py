@@ -128,3 +128,102 @@ class Selfish:
         elif not should_pass:
             if car.speed < car.initial_speed:
                 car.speed += .01
+
+# Segregated Strategy Class
+# Selfish byt will high speed cars only use left 2 lanes and slow speed cars only use right 2 lanes         
+class Segregated:
+    def run_strategy(self, car, cars):
+        will_collide = False
+        should_pass = False
+        right_good = True
+        left_good = True
+
+        # Iterate through cars
+        if car.initial_speed >= 2.3:
+            for other in cars:
+                if car != other:
+                    # Check for imminent collision
+                    if car.will_collide(other) and not will_collide:
+                        will_collide = True
+                        collision_car = other
+
+                    # Check if car should pass soon
+                    if car.should_pass(other) and not should_pass:
+                        should_pass = True
+
+                    # Check if you can move right
+                    if not car.right_side_clear(other) or car.y >= lane_height[1]:
+                        right_good = False
+
+                    # Check if you can move left
+                    if not car.left_side_clear(other) or car.y == lane_height[0]:
+                        left_good = False
+
+                    # Break loop if all conditions are met
+                    if will_collide and should_pass and not right_good and not left_good:
+                        break
+        elif car.initial_speed <= 1.7:
+            for other in cars:
+                if car != other:
+                    # Check for imminent collision
+                    if car.will_collide(other) and not will_collide:
+                        will_collide = True
+                        collision_car = other
+
+                    # Check if car should pass soon
+                    if car.should_pass(other) and not should_pass:
+                        should_pass = True
+
+                    # Check if you can move right
+                    if not car.right_side_clear(other) or car.y == lane_height[2]:
+                        right_good = False
+
+                    # Check if you can move left
+                    if not car.left_side_clear(other) or car.y <= lane_height[1]:
+                        left_good = False
+
+                    # Break loop if all conditions are met
+                    if will_collide and should_pass and not right_good and not left_good:
+                        break
+        else:
+            for other in cars:
+                if car != other:
+                    # Check for imminent collision
+                    if car.will_collide(other) and not will_collide:
+                        will_collide = True
+                        collision_car = other
+
+                    # Check if car should pass soon
+                    if car.should_pass(other) and not should_pass:
+                        should_pass = True
+
+                    # Check if you can move right
+                    if not car.right_side_clear(other) or car.y == lane_height[2]:
+                        right_good = False
+
+                    # Check if you can move left
+                    if not car.left_side_clear(other) or car.y == lane_height[0]:
+                        left_good = False
+
+                    # Break loop if all conditions are met
+                    if will_collide and should_pass and not right_good and not left_good:
+                        break
+
+        if will_collide:
+            if car.speed > collision_car.speed:
+                car.speed = collision_car.speed
+            car.speed -= .01
+            return
+        elif should_pass and left_good:
+            if car.speed < car.initial_speed:
+                car.speed += .01
+            car.merge_left()
+        elif should_pass and right_good:
+            if car.speed < car.initial_speed:
+                car.speed += .01
+            car.merge_right() 
+        elif should_pass and car.speed >= 1:
+            car.speed -= .01
+        elif not should_pass or not will_collide:
+            if car.speed < car.initial_speed:
+                car.speed += .01

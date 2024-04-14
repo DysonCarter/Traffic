@@ -1,7 +1,7 @@
 import pygame
 import random
 from car import Car
-from strategy import Dumb, Nice, Selfish
+from strategy import Dumb, Nice, Selfish, Segregated
 from sys import exit
 
 pygame.init()
@@ -21,7 +21,7 @@ lane_height = [50, 100, 150]
 car_count = 15
 border_width = 10
 running = True
-strategy = Nice
+strategy = Segregated
 
 # Create window
 screen = pygame.display.set_mode((width, height))
@@ -73,7 +73,7 @@ slider_value = car_count  # Initial value for the slider
 max_slider_value = 30
 
 # Define available strategies
-strategies = [Dumb, Nice, Selfish]  # Add more strategies here if needed in the future
+strategies = [Dumb, Nice, Selfish, Segregated]  # Add more strategies here if needed in the future
 
 # Define positions for reset button and strategy buttons
 reset_button_x = 30
@@ -170,7 +170,7 @@ while running:
     draw_border()
 
     pygame.display.update()
-    clock.tick(60)
+    clock.tick(120)
 
 # Quit
 pygame.quit()
