@@ -1,5 +1,3 @@
-# traffic.py by Dyson carter
-
 import pygame
 import random
 from car import Car
@@ -54,9 +52,10 @@ menu_height = 200
 menu_color = (50, 50, 50)
 button_color = (100, 100, 100)
 text_color = WHITE
-button_width = 300
-button_height = 150
+button_width = 100
+button_height = 50
 button_margin = 20
+font = pygame.font.SysFont(None, 32)  # Define font for button text
 
 # Car count slider constants
 slider_bar_width = 20
@@ -73,25 +72,59 @@ slider_y = height - menu_height + (menu_height - slider_bar_height) // 2  # Posi
 slider_value = 8  # Initial value for the slider
 max_slider_value = 30
 
-# Function to draw menu
-def draw_menu():
-    pygame.draw.rect(screen, menu_color, (0, height - menu_height, width, menu_height))
+# Define available strategies
+strategies = [Dumb, Nice, Selfish]  # Add more strategies here if needed in the future
 
-    font = pygame.font.SysFont(None, 64)
+# Define positions for reset button and strategy buttons
+reset_button_x = 30
+reset_button_y = height - menu_height + button_margin
+strategy_button_x = slider_x + slider_bar_width + button_margin
+strategy_button_y = height - menu_height + button_margin
 
-    # Draw Reset button
-    reset_button_rect = pygame.Rect(30, height - menu_height + button_margin, button_width, button_height)
+# Function to draw reset button
+def draw_reset_button():
+    reset_button_rect = pygame.Rect(reset_button_x, reset_button_y, button_width, button_height)
     pygame.draw.rect(screen, (255, 0, 0), reset_button_rect)
     text_surface = font.render("Reset", True, text_color)
     text_rect = text_surface.get_rect(center=reset_button_rect.center)
     screen.blit(text_surface, text_rect)
 
-    # Draw Car Count Slider
+# Function to draw slider
+def draw_slider():
     pygame.draw.rect(screen, slider_color, (slider_x, slider_y, slider_bar_width, slider_bar_height))
     slider_button_rect = pygame.Rect(slider_x - (slider_button_width - slider_bar_width) / 2, 
                                      slider_y + (slider_value / max_slider_value) * (slider_bar_height - slider_button_height), 
                                      slider_button_width, slider_button_height)
     pygame.draw.rect(screen, slider_button_color, slider_button_rect)
+
+
+# Function to draw strategy buttons
+def draw_strategy_buttons():
+    for i, strategy_class in enumerate(strategies):
+        button_rect = pygame.Rect(strategy_button_x + i * (button_width + button_margin), strategy_button_y, button_width, button_height)
+        pygame.draw.rect(screen, button_color, button_rect)
+        text_surface = font.render(strategy_class.__name__, True, text_color)
+        text_rect = text_surface.get_rect(center=button_rect.center)
+        screen.blit(text_surface, text_rect)
+
+# Function to draw menu
+def draw_menu():
+    pygame.draw.rect(screen, menu_color, (0, height - menu_height, width, menu_height))
+
+    draw_reset_button()  # Draw reset button
+    draw_slider()  # Draw slider
+    draw_strategy_buttons()  # Draw strategy buttons
+
+
+# Function to handle click events on strategy buttons
+def handle_strategy_click(pos):
+    global strategy
+
+    x, y = pos
+    for i, _ in enumerate(strategies):
+        button_rect = pygame.Rect(strategy_button_x + i * (button_width + button_margin), strategy_button_y, button_width, button_height)
+        if button_rect.collidepoint(x, y):
+            strategy = strategies[i]
 
 # Function to handle mouse click events
 def handle_menu_click(pos):
@@ -99,7 +132,7 @@ def handle_menu_click(pos):
 
     x, y = pos
     if height - menu_height <= y <= height:
-        if 30 <= x <= 30 + button_width:
+        if reset_button_x <= x <= reset_button_x + button_width and reset_button_y <= y <= reset_button_y + button_height:
             # Reset simulation
             cars = [Car(random.randint(0, lane_count), strategy) for _ in range(slider_value)]
         elif slider_x <= x <= slider_x + slider_bar_width and slider_y <= y <= slider_y + slider_bar_height:
@@ -121,6 +154,7 @@ while running:
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
                 handle_menu_click(event.pos)
+                handle_strategy_click(event.pos)  # Handle strategy button clicks
         elif event.type == pygame.MOUSEMOTION:
             if event.buttons[0] == 1:
                 handle_mouse_drag(event.pos)
