@@ -45,9 +45,9 @@ class Car:
         if self.x > width:
             self.x = 0
     def merge_left(self):
-        self.y -= 2.5
+        self.y -= 1
     def merge_right(self):
-        self.y += 2.5
+        self.y += 1
 
     # Lane checks
     # Very Clear

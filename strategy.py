@@ -21,12 +21,21 @@ clock = pygame.time.Clock()
 # Grin and Bare it Strategy - No Changing Lanes
 class Dumb: 
     def run_strategy(self, car, cars):
+        will_collide = False
+
         for other in cars:
-            if car.will_collide(other) and (car != other):
-                car.speed = other.speed
+            if car.will_collide(other):
+                will_collide = True
+                collision_car = other
                 break
-            elif car.speed <= car.initial_speed:
-                car.speed += .01
+        
+        if will_collide:
+            if car.speed >= collision_car.speed:
+                car.speed = collision_car.speed
+            car.speed -= .01
+        elif car.speed < car.initial_speed:
+            car.speed += .01
+        
 
 # Nice Strategy Class
 # Considerate of other cars - Only passes on the left - if the right lane is pretty open they'll get over
@@ -50,11 +59,11 @@ class Nice:
                     should_pass = True
 
                 # Check if you can move right
-                if not car.right_side_very_clear(other) or car.y == lane_height[2]:
+                if not car.right_side_very_clear(other) or car.y >= lane_height[2]:
                     right_good = False
 
                 # Check if you can move left
-                if not car.left_side_clear(other) or car.y == lane_height[0]:
+                if not car.left_side_clear(other) or car.y <= lane_height[0]:
                     left_good = False
 
                 # Break loop if all conditions are met
@@ -101,11 +110,11 @@ class Selfish:
                     should_pass = True
 
                 # Check if you can move right
-                if not car.right_side_clear(other) or car.y == lane_height[2]:
+                if not car.right_side_clear(other) or car.y >= lane_height[2]:
                     right_good = False
 
                 # Check if you can move left
-                if not car.left_side_clear(other) or car.y == lane_height[0]:
+                if not car.left_side_clear(other) or car.y <= lane_height[0]:
                     left_good = False
 
                 # Break loop if all conditions are met
@@ -161,7 +170,7 @@ class Segregated:
                         right_good = False
 
                     # Check if you can move left
-                    if not car.left_side_clear(other) or car.y == lane_height[0]:
+                    if not car.left_side_clear(other) or car.y <= lane_height[0]:
                         left_good = False
 
                     # Break loop if all conditions are met
@@ -181,7 +190,7 @@ class Segregated:
                         should_pass = True
 
                     # Check if you can move right
-                    if not car.right_side_clear(other) or car.y == lane_height[2]:
+                    if not car.right_side_clear(other) or car.y >= lane_height[2]:
                         right_good = False
 
                     # Check if you can move left
@@ -204,11 +213,11 @@ class Segregated:
                         should_pass = True
 
                     # Check if you can move right
-                    if not car.right_side_clear(other) or car.y == lane_height[2]:
+                    if not car.right_side_clear(other) or car.y >= lane_height[2]:
                         right_good = False
 
                     # Check if you can move left
-                    if not car.left_side_clear(other) or car.y == lane_height[0]:
+                    if not car.left_side_clear(other) or car.y <= lane_height[0]:
                         left_good = False
 
                     # Break loop if all conditions are met
