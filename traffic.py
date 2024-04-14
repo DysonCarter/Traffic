@@ -21,7 +21,7 @@ lane_height = [50, 100, 150]
 car_count = 15
 border_width = 10
 running = True
-strategy = Segregated
+strategy = Random
 
 # Create window
 screen = pygame.display.set_mode((width, height))
@@ -44,16 +44,13 @@ def draw_border():
     pygame.draw.rect(screen, BLACK, (0, 0, border_width, height))  # Left border
     pygame.draw.rect(screen, BLACK, (width - border_width, 0, border_width, height))
 
-# Create all cars
-cars = [Car(random.randint(0, lane_count), strategy) for _ in range(car_count)]
-
 # Define constants for the menu
 menu_height = 200
 menu_color = (50, 50, 50)
 button_color = (100, 100, 100)
 text_color = WHITE
 button_width = 175
-button_height = 100
+button_height = 120
 button_margin = 40
 font = pygame.font.SysFont(None, 32)  # Define font for button text
 
@@ -148,6 +145,11 @@ def handle_mouse_drag(pos):
     if slider_x <= x <= slider_x + slider_bar_width and slider_y <= y <= slider_y + slider_bar_height:
         # Calculate slider value based on mouse position
         slider_value = min(max(int((y - slider_y) / slider_bar_height * max_slider_value), 1), max_slider_value)
+
+if strategy != Random:
+    cars = [Car(random.randint(0, lane_count), strategy) for _ in range(slider_value)]
+else:
+    cars = [Car(random.randint(0, lane_count), random.choice(Usable_strategies)) for _ in range(slider_value)]
 
 while running:
     for event in pygame.event.get():

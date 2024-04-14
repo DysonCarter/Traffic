@@ -62,7 +62,7 @@ class Nice:
                     break
 
         if will_collide:
-            if car.speed > collision_car.speed:
+            if car.speed >= collision_car.speed:
                 car.speed = collision_car.speed
             car.speed -= .01
         elif should_pass and left_good:
