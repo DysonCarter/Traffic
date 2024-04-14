@@ -18,10 +18,10 @@ height = 400
 lane_width = 5
 lane_count = 2
 lane_height = [50, 100, 150]
-car_count = 8
+car_count = 15
 border_width = 10
 running = True
-strategy = Selfish
+strategy = Nice
 
 # Create window
 screen = pygame.display.set_mode((width, height))
@@ -69,7 +69,7 @@ slider_button_color = GREEN
 slider_width = 40  # Width of the slider bar and slider button combined
 slider_x = button_width + 75
 slider_y = height - menu_height + (menu_height - slider_bar_height) // 2  # Position the slider in the middle of the menu vertically
-slider_value = 8  # Initial value for the slider
+slider_value = car_count  # Initial value for the slider
 max_slider_value = 30
 
 # Define available strategies
@@ -97,7 +97,6 @@ def draw_slider():
                                      slider_button_width, slider_button_height)
     pygame.draw.rect(screen, slider_button_color, slider_button_rect)
 
-
 # Function to draw strategy buttons
 def draw_strategy_buttons():
     for i, strategy_class in enumerate(strategies):
@@ -114,7 +113,6 @@ def draw_menu():
     draw_reset_button()  # Draw reset button
     draw_slider()  # Draw slider
     draw_strategy_buttons()  # Draw strategy buttons
-
 
 # Function to handle click events on strategy buttons
 def handle_strategy_click(pos):

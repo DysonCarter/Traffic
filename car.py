@@ -2,6 +2,8 @@
 import pygame
 import random
 
+from strategy import Selfish, Nice, Dumb
+
 # Define constants
 width = 1400
 height = 200
@@ -34,6 +36,7 @@ class Car:
         self.initial_speed = random.uniform(1, 3)  # Random initial speed
         self.speed = self.initial_speed
         self.strategy = strategy()
+        self.strategyName = str(strategy)
 
     # Movement
     def move(self):
@@ -169,4 +172,13 @@ class Car:
 
     # Draws the car
     def draw(self):
-        pygame.draw.circle(screen, (85 * self.initial_speed, 0,0), (int(self.x), int(self.y)), car_radius)
+        if self.strategyName == "<class 'strategy.Selfish'>":
+            color = (85 * self.initial_speed, 0, 0)
+        elif self.strategyName == "<class 'strategy.Nice'>":
+            color = (0, 0, 85 * self.initial_speed)            
+        elif self.strategyName == "<class 'strategy.Dumb'>":
+            color = (0, 85 * self.initial_speed, 0)
+        else:
+            color = (self.initial_speed * 40, 0, self.initial_speed*85)  # White
+
+        pygame.draw.circle(screen, color, (int(self.x), int(self.y)), car_radius)

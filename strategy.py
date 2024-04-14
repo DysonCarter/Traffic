@@ -1,6 +1,5 @@
 import pygame
 import random
-from car import Car
 from sys import exit
 
 # Define colors
