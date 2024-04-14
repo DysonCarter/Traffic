@@ -71,7 +71,7 @@ max_slider_value = 30
 
 # Define available strategies
 strategies = [Dumb, Nice, Selfish, Segregated, Random]  # Add more strategies here if needed in the future
-Usable_strategies = [Dumb, Nice, Selfish, Segregated]
+Usable_strategies = [Dumb, Nice, Selfish, Segregated, Nice, Selfish, Segregated]
 
 # Define positions for reset button and strategy buttons
 reset_button_x = 30
@@ -176,7 +176,7 @@ while running:
     draw_border()
 
     pygame.display.update()
-    clock.tick(120)
+    clock.tick(60)
 
 # Quit
 pygame.quit()

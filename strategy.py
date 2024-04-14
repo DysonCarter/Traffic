@@ -57,6 +57,7 @@ class Nice:
                 # Check if car should pass soon
                 if car.should_pass(other) and not should_pass:
                     should_pass = True
+                    collision_car = other
 
                 # Check if you can move right
                 if not car.right_side_very_clear(other) or car.y >= lane_height[2]:
@@ -82,7 +83,7 @@ class Nice:
             if car.speed < car.initial_speed:
                 car.speed += .01
             car.merge_right() 
-        elif should_pass and car.speed >= 1:
+        elif should_pass and car.speed >= collision_car.speed:
             car.speed -= .01
         elif not should_pass:
             if car.speed < car.initial_speed:
@@ -108,6 +109,7 @@ class Selfish:
                 # Check if car should pass soon
                 if car.should_pass(other) and not should_pass:
                     should_pass = True
+                    collision_car = other
 
                 # Check if you can move right
                 if not car.right_side_clear(other) or car.y >= lane_height[2]:
@@ -134,7 +136,7 @@ class Selfish:
             if car.speed < car.initial_speed:
                 car.speed += .01
             car.merge_right() 
-        elif should_pass and car.speed >= 1:
+        elif should_pass and car.speed >= collision_car.speed:
             car.speed -= .01
         elif not should_pass or not will_collide:
             if car.speed < car.initial_speed:
@@ -152,7 +154,7 @@ class Segregated:
         fast = False
 
         # Iterate through cars
-        if car.initial_speed >= 2.3:
+        if car.initial_speed >= 2.5:
             fast = True
             for other in cars:
                 if car != other:
@@ -164,6 +166,7 @@ class Segregated:
                     # Check if car should pass soon
                     if car.should_pass(other) and not should_pass:
                         should_pass = True
+                        collision_car = other
 
                     # Check if you can move right
                     if not car.right_side_clear(other) or car.y >= lane_height[1]:
@@ -176,7 +179,7 @@ class Segregated:
                     # Break loop if all conditions are met
                     if will_collide and should_pass and not right_good and not left_good:
                         break
-        elif car.initial_speed <= 1.7:
+        elif car.initial_speed <= 1.9:
             slow = True
             for other in cars:
                 if car != other:
@@ -188,6 +191,7 @@ class Segregated:
                     # Check if car should pass soon
                     if car.should_pass(other) and not should_pass:
                         should_pass = True
+                        collision_car = other
 
                     # Check if you can move right
                     if not car.right_side_clear(other) or car.y >= lane_height[2]:
@@ -211,6 +215,7 @@ class Segregated:
                     # Check if car should pass soon
                     if car.should_pass(other) and not should_pass:
                         should_pass = True
+                        collision_car = other
 
                     # Check if you can move right
                     if not car.right_side_clear(other) or car.y >= lane_height[2]:
@@ -237,7 +242,7 @@ class Segregated:
             if car.speed < car.initial_speed:
                 car.speed += .01
             car.merge_right() 
-        elif should_pass and car.speed >= 1:
+        elif should_pass and car.speed >= collision_car.speed:
             car.speed -= .01
         elif not should_pass or not will_collide:
             if car.speed < car.initial_speed:

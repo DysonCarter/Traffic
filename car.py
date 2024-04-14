@@ -41,13 +41,13 @@ class Car:
     # Movement
     def move(self):
         # Move horizontally
-        self.x += self.speed
+        self.x += self.speed*2
         if self.x > width:
             self.x = 0
     def merge_left(self):
-        self.y -= 1
+        self.y -= 5
     def merge_right(self):
-        self.y += 1
+        self.y += 5
 
     # Lane checks
     # Very Clear
