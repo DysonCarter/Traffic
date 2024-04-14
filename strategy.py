@@ -25,6 +25,8 @@ class Dumb:
             if car.will_collide(other) and (car != other):
                 car.speed = other.speed
                 break
+            elif car.speed <= car.initial_speed:
+                car.speed += .01
 
 # Nice Strategy Class
 # Considerate of other cars - Only passes on the left - if the right lane is pretty open they'll get over
@@ -125,7 +127,7 @@ class Selfish:
             car.merge_right() 
         elif should_pass and car.speed >= 1:
             car.speed -= .01
-        elif not should_pass:
+        elif not should_pass or not will_collide:
             if car.speed < car.initial_speed:
                 car.speed += .01
 
@@ -227,3 +229,6 @@ class Segregated:
         elif not should_pass or not will_collide:
             if car.speed < car.initial_speed:
                 car.speed += .01
+
+class Random:
+    pass

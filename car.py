@@ -175,9 +175,9 @@ class Car:
         if self.strategyName == "<class 'strategy.Selfish'>":
             color = (85 * self.initial_speed, 0, 0)
         elif self.strategyName == "<class 'strategy.Nice'>":
-            color = (0, 0, 85 * self.initial_speed)            
+            color = (0, 30 * self.initial_speed, 85 * self.initial_speed)     
         elif self.strategyName == "<class 'strategy.Dumb'>":
-            color = (0, 85 * self.initial_speed, 0)
+            color = (40 * self.initial_speed, 30 * self.initial_speed, 10 * self.initial_speed)
         else:
             color = (self.initial_speed * 40, 0, self.initial_speed*85)  # Purplegit
 

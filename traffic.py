@@ -1,7 +1,7 @@
 import pygame
 import random
 from car import Car
-from strategy import Dumb, Nice, Selfish, Segregated
+from strategy import Dumb, Nice, Selfish, Segregated, Random
 from sys import exit
 
 pygame.init()
@@ -54,7 +54,7 @@ button_color = (100, 100, 100)
 text_color = WHITE
 button_width = 175
 button_height = 100
-button_margin = 50
+button_margin = 40
 font = pygame.font.SysFont(None, 32)  # Define font for button text
 
 # Car count slider constants
@@ -73,7 +73,8 @@ slider_value = car_count  # Initial value for the slider
 max_slider_value = 30
 
 # Define available strategies
-strategies = [Dumb, Nice, Selfish, Segregated]  # Add more strategies here if needed in the future
+strategies = [Dumb, Nice, Selfish, Segregated, Random]  # Add more strategies here if needed in the future
+Usable_strategies = [Dumb, Nice, Selfish, Segregated]
 
 # Define positions for reset button and strategy buttons
 reset_button_x = 30
@@ -132,7 +133,10 @@ def handle_menu_click(pos):
     if height - menu_height <= y <= height:
         if reset_button_x <= x <= reset_button_x + button_width and reset_button_y <= y <= reset_button_y + button_height:
             # Reset simulation
-            cars = [Car(random.randint(0, lane_count), strategy) for _ in range(slider_value)]
+            if strategy != Random:
+                cars = [Car(random.randint(0, lane_count), strategy) for _ in range(slider_value)]
+            else:
+                cars = [Car(random.randint(0, lane_count), random.choice(Usable_strategies)) for _ in range(slider_value)]
         elif slider_x <= x <= slider_x + slider_bar_width and slider_y <= y <= slider_y + slider_bar_height:
             slider_value = min(max(int((y - slider_y) / slider_bar_height * max_slider_value), 1), max_slider_value)
 
