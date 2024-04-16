@@ -21,7 +21,7 @@ lane_height = [50, 100, 150]
 car_count = 15
 border_width = 10
 running = True
-strategy = Random
+strategy = Nice
 
 # Create window
 screen = pygame.display.set_mode((width, height))

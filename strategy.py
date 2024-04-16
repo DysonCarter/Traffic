@@ -154,7 +154,7 @@ class Segregated:
         fast = False
 
         # Iterate through cars
-        if car.initial_speed >= 2.25:
+        if car.initial_speed >= 2:
             fast = True
             for other in cars:
                 if car != other:
@@ -179,7 +179,7 @@ class Segregated:
                     # Break loop if all conditions are met
                     if will_collide and should_pass and not right_good and not left_good:
                         break
-        elif car.initial_speed <= 1.75:
+        elif car.initial_speed <= 2:
             slow = True
             for other in cars:
                 if car != other:
